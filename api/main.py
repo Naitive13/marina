@@ -1,7 +1,8 @@
-from flask import Flask
+from flask import Flask, request
 from waitress import serve
 from paste.translogger import TransLogger
 import logging
+import os
 
 logger = logging.getLogger("waitress")
 logger.setLevel(logging.DEBUG)
@@ -9,8 +10,21 @@ app = Flask(__name__)
 
 
 @app.route("/ping")
-def hello_world():
+def pong():
     return "pong"
+
+
+@app.route("/marina")
+def marina():
+    try:
+        laza = request.args.get("laza")
+        result = os.popen(f"../marina '{laza}'").read()
+        if result == "":
+            raise Exception("result is empty...")
+        return result
+    except Exception as e:
+        app.logger.error(f"An error as occured: {e}")
+        return "Marina failed..."
 
 
 if __name__ == "__main__":
