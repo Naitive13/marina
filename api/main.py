@@ -24,7 +24,7 @@ def marina():
         return result
     except Exception as e:
         app.logger.error(f"An error as occured: {e}")
-        return "Marina failed..."
+        return f"Marina failed... \n {str(e)}"
 
 
 if __name__ == "__main__":
